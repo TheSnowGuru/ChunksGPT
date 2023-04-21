@@ -82,4 +82,5 @@ This project is released under the [MIT License](LICENSE).
 
 ## Acknowledgements
 
-This project is built using OpenAI's ChatGPT API. We would like to thank the OpenAI team for providing an amazing AI language model, and we appreciate the support and contributions from the community in helping to improve this project.
+This project is built by Shay Ronen using OpenAI's ChatGPT API. We would like to thank the OpenAI team for providing an amazing AI language model, 
+and we appreciate the support and contributions from the community in helping to improve this project.
