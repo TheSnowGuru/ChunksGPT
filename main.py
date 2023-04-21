@@ -1,41 +1,45 @@
-import requests
-from code_divider import divide_codebase
-from code_summarizer import generate_summary
-from chatgpt_processor import process_code_module
-from results_integrator import integrate_results
-from validation_testing import validate_chatgpt_output
+import timeit
+import pycallgraph
+from pycallgraph import PyCallGraph
+from pycallgraph.output import GraphvizOutput
 
-def load_codebase_from_github(url):
-    response = requests.get(url)
-    if response.status_code == 200:
-        return response.text
-    else:
-        raise ValueError(f"Failed to load codebase from URL: {url}")
+from code_divider import divide_codebase
+from code_summarizer import summarize_code
+from chatgpt_processor import process_code_with_chatgpt
+from results_integrator import integrate_results
+from validation_testing import validate_and_test
 
 def main():
-    # Load your codebase as a string from GitHub URL
-    github_url = "https://raw.githubusercontent.com/user/repo/branch/your_code_file.py"
-    codebase = load_codebase_from_github(github_url)
-
-    # Divide the codebase into modules
+    repo_url = "https://github.com/user/repo_name"
+    codebase = load_codebase_from_url(repo_url)
+    
+    # Time the iteration of the codebase
+    start_time = timeit.default_timer()
+    
     modules = divide_codebase(codebase)
+    summaries = [summarize_code(module) for module in modules]
+    
+    processed_modules = [
+        process_code_with_chatgpt(module, summary)
+        for module, summary in zip(modules, summaries)
+    ]
+    
+    new_codebase = integrate_results(processed_modules)
+    
+    with open(f"{repo_url.split('/')[-1]}_suggestions.md", "w") as f:
+        f.write(new_codebase)
 
-    # Process each module with ChatGPT and validate the output
-    chatgpt_results = []
-    for module in modules:
-        summary = generate_summary(module)
-        chatgpt_output = process_code_module(module, summary)
-        validate_chatgpt_output(chatgpt_output)
-        chatgpt_results.append(chatgpt_output)
+    end_time = timeit.default_timer()
+    print(f"Time taken: {end_time - start_time} seconds")
 
-    # Integrate the results back into the codebase
-    modified_codebase = integrate_results(codebase, modules, chatgpt_results)
+    # Generate codebase visualization
+    with PyCallGraph(output=GraphvizOutput()):
+        validate_and_test(new_codebase)
 
-    # Save the modified codebase to a new file
-    with open("modified_code_file.py", "w") as f:
-        f.write(modified_codebase)
-
-    # Perform additional testing and validation of the modified codebase here
+    # Save code structure in DOT language schema
+    pycallgraph.Config(include_stdlib=True)
+    graphviz = GraphvizOutput(output_file='code_structure.dot')
+    graphviz.done()
 
 if __name__ == "__main__":
     main()
