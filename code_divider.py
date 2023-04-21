@@ -1,29 +1,38 @@
-import os
+import re
 
-# Define the maximum token limit
-MAX_TOKEN_LIMIT = 8000
+# Constants
+TOKEN_LIMIT = 8000
 
-# Define the path of the codebase directory
-CODEBASE_DIR = "/path/to/codebase"
-
-# Define the path of the directory where the divided codebase will be stored
-DIVIDED_CODEBASE_DIR = "/path/to/divided/codebase"
-
-# Create the directory to store the divided codebase if it doesn't exist
-if not os.path.exists(DIVIDED_CODEBASE_DIR):
-    os.makedirs(DIVIDED_CODEBASE_DIR)
-
-# Iterate over the files in the codebase directory
-for filename in os.listdir(CODEBASE_DIR):
-    filepath = os.path.join(CODEBASE_DIR, filename)
-    
-    # Read the contents of the file
-    with open(filepath, "r") as f:
-        code = f.read()
-    
-    # Divide the code into smaller sections that remain within the token limit
+# Function to divide codebase into manageable sections
+def divide_codebase(codebase):
     sections = []
     current_section = ""
+    token_count = 0
     
-    for line in code.split("\n"):
-       
+    # Split codebase into lines
+    lines = codebase.split("\n")
+    
+    for line in lines:
+        # Check if line exceeds token limit
+        if len(line) > TOKEN_LIMIT:
+            print(f"Error: Line exceeds token limit ({len(line)} > {TOKEN_LIMIT})")
+            return None
+        
+        # Check if adding line will exceed token limit
+        if token_count + len(line) > TOKEN_LIMIT:
+            sections.append(current_section)
+            current_section = ""
+            token_count = 0
+        
+        current_section += line + "\n"
+        token_count += len(line)
+    
+    # Add last section to list
+    sections.append(current_section)
+    
+    return sections
+
+# Function to summarize code section
+def summarize_section(section):
+    # Split section into lines
+    lines = section.split
