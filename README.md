@@ -14,6 +14,7 @@ The Codebase Refactoring Assistant divides a codebase into smaller modules, gene
 - Process each module with ChatGPT and validate the output
 - Integrate the results back into the codebase
 - Validate and test the modified codebase using Python's unittest framework
+- Create codebase schema in dot language
 
 ## Usage
 
