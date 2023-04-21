@@ -1,3 +1,5 @@
+import unittest
+
 def validate_chatgpt_output(chatgpt_output):
     """
     Validate the output provided by ChatGPT. You can customize this function to
@@ -9,5 +11,14 @@ def validate_chatgpt_output(chatgpt_output):
 
     return True
 
-# Add testing functions here, depending on your codebase
-# For example, you can use Python's unittest module to write test cases
+# Example unittest for testing a sample function in your codebase
+class TestSampleFunction(unittest.TestCase):
+    def test_sample_function(self):
+        from modified_code_file import sample_function
+
+        self.assertEqual(sample_function(2, 3), 5)
+        self.assertEqual(sample_function(-1, 1), 0)
+        self.assertNotEqual(sample_function(5, 5), 0)
+
+if __name__ == "__main__":
+    unittest.main()
