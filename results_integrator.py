@@ -7,4 +7,3 @@ def integrate_results(original_codebase, modules, chatgpt_results):
         modified_codebase = modified_codebase.replace(module, result)
 
     return modified_codebase
-
