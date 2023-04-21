@@ -1,4 +1,4 @@
-# ChunksGPT - Codebase Refactoring Assistant
+# ChunksGPT - Ultimate Codebase Refactoring Assistant! 🔥
 
 This project aims to assist developers with refactoring and improving their codebases using OpenAI's ChatGPT. The goal is to create a collaborative environment where the community can contribute, enhance, and build upon the codebase refactoring process.
 
