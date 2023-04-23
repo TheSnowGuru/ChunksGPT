@@ -1,4 +1,3 @@
-# chatgpt_processor.py
 import openai
 import os
 import concurrent.futures
@@ -7,8 +6,7 @@ from typing import Any, List
 # Set up OpenAI API credentials
 openai.api_key = os.environ["OPENAI_API_KEY"]
 
-# Other functions and imports ...
-
+# Function to send a request to OpenAI API
 def openai_request(messages):
     return openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
@@ -18,20 +16,15 @@ def openai_request(messages):
         top_p=1.0,
     )
 
+# Function to dispatch OpenAI requests concurrently
 def dispatch_openai_requests(
     messages_list: List[List[dict[str, Any]]],
 ) -> List[str]:
-    """Dispatches requests to OpenAI API concurrently.
-    
-    Args:
-        messages_list: List of messages to be sent to OpenAI ChatCompletion API.
-    Returns:
-        List of responses from OpenAI API.
-    """
     with concurrent.futures.ThreadPoolExecutor() as executor:
         responses = list(executor.map(openai_request, messages_list))
     return responses
 
+# Function to process codebase concurrently
 def process_codebase_concurrently(code_sections: List[str]) -> List[str]:
     messages_list = [
         [{"role": "user", "content": f"Review this code snippet: {section}"}]
@@ -42,3 +35,16 @@ def process_codebase_concurrently(code_sections: List[str]) -> List[str]:
 
     return [x['choices'][0]['message']['content'] for x in predictions]
 
+# Function to process repo insights
+def process_repo_insights(repo_digest):
+    prompt = f"Given the codebase digestion summary:\n{repo_digest}\nPlease provide insights, suggestions, or modifications for this codebase."
+
+    response = openai.Completion.create(
+        engine="davinci-codex",
+        prompt=prompt,
+        max_tokens=150,
+        n=1,
+        stop=None,
+        temperature=0.5,
+    )
+    return response.choices[0].text
