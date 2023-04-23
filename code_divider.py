@@ -1,3 +1,10 @@
+
+```
+This file is responsible for dividing the codebase into smaller, 
+manageable sections for processing with ChatGPT. It also provides functionality to 
+load the codebase from a GitHub repo URL.
+```
+
 import re
 
 def divide_codebase(codebase, module_size=8000):
