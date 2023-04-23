@@ -1,3 +1,11 @@
+'''
+This file handles communication with the OpenAI API for ChatGPT. 
+It sends the divided code sections to ChatGPT for processing and retrieves insights,
+suggestions, or modifications for the codebase. It utilizes ultra-fast processing with concurrent.futures,
+which enables users to send up to 100 requests per second, significantly improving performance.
+
+'''
+
 import openai
 import os
 import concurrent.futures
