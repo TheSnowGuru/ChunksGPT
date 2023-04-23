@@ -1,3 +1,11 @@
+'''
+This file contains functionality to validate the output from ChatGPT 
+and thoroughly test the modified code to ensure it works as intended. 
+It runs unit tests on the modified codebase and reports the results.
+'''
+
+
+
 import unittest
 
 def validate_chatgpt_output(chatgpt_output):
